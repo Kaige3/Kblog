@@ -1,0 +1,8 @@
+com\kaige\controller\UserController.class
+com\kaige\KaigeBlogApplication.class
+com\kaige\controller\LinkController.class
+com\kaige\controller\BlogLoginController.class
+com\kaige\controller\CommentController.class
+com\kaige\controller\CategoryController.class
+com\kaige\controller\UploadController.class
+com\kaige\controller\ArticleController.class
