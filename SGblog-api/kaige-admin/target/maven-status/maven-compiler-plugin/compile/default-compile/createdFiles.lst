@@ -1,0 +1,11 @@
+com\kaige\controller\UserController.class
+com\kaige\AdminApplication.class
+com\kaige\controller\UserRoleController.class
+com\kaige\controller\MenuController.class
+com\kaige\controller\TagController.class
+com\kaige\controller\LoginController.class
+com\kaige\filter\JwtAuthenticationTokenFilter.class
+com\kaige\controller\CategoryController.class
+com\kaige\controller\UploadController.class
+com\kaige\config\SecurityConfig.class
+com\kaige\controller\ArticleController.class
