@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaige.mapper.FriendMapper">
+    <update id="updateViewsByNickname">
+        update friend set views = views + 1 where nickname = #{nickname}
+    </update>
+    <select id="getFriendVoList" resultType="com.kaige.model.vo.FriendVo">
+        select friend.nickname,friend.description,friend.website,friend.avatar
+        from friend
+        where is_published = true
+        order by rand()
+    </select>
+</mapper>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaige.mapper.CategoryMapper">
+    <select id="getCategoryNameList" resultType="com.kaige.entity.Category">
+        select category.category_name as name
+        from category
+        order by id desc
+    </select>
+</mapper>

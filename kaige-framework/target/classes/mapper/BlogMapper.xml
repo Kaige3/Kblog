@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaige.mapper.BlogMapper">
+
+    <select id="getRandomBlogListByLimitNumAndIsPublishedAndIsRecommend"
+            resultType="com.kaige.model.vo.RandomBlog">
+        select id,blog.title,blog.password,blog.create_time,blog.first_picture
+        from blog
+        where is_published = true and is_recommend = true
+        order by rand() limit #{limitNum}
+    </select>
+
+    <select id="getBlogInfoListByCategoryNameAndIsPublished" resultType="com.kaige.model.vo.BlogInfo">
+        select b.id, b.title, b.description, b.is_top, b.create_time, b.views, b.words, b.read_time, b.password, c.category_name
+        from category as c left join blog as b on b.category_id=c.id
+        where c.category_name=#{categoryName} and b.is_published=true
+    </select>
+    <resultMap id="blogDetail" type="com.kaige.model.vo.BlogDetail">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="appreciation" column="is_appreciation"/>
+        <result property="commentEnabled" column="is_comment_enabled"/>
+        <result property="top" column="is_top"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="views" column="views"/>
+        <result property="words" column="words"/>
+        <result property="readTime" column="read_time"/>
+        <result property="password" column="password"/>
+        <association property="category" javaType="com.kaige.entity.Category">
+            <result property="name" column="category_name"/>
+        </association>
+        <collection property="tags" javaType="com.kaige.entity.Tag">
+            <result property="name" column="tag_name"/>
+            <result property="color" column="color"/>
+        </collection>
+    </resultMap>
+    <select id="getBlogByIdAndIsPublished" resultType="com.kaige.model.vo.BlogDetail">
+        select b.id, b.title, b.content, b.is_appreciation, b.is_comment_enabled, b.is_top,
+               b.create_time, b.update_time, b.views, b.words, b.read_time, b.password,
+               c.category_name,
+               t.tag_name as tag_name, t.color
+        from (((blog as b left join category as c on b.category_id=c.id) left join blog_tag as bt on b.id=bt.blog_id) left join tag as t on bt.tag_id=t.id)
+        where b.id=#{id} and b.is_published=true
+    </select>
+</mapper>

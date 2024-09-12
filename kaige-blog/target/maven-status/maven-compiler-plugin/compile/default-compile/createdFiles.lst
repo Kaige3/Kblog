@@ -1,0 +1,12 @@
+com\kaige\controller\MomentController.class
+com\kaige\controller\TagController.class
+com\kaige\controller\LoginController.class
+com\kaige\controller\CategoryController.class
+com\kaige\controller\ArchiveController.class
+com\kaige\controller\AboutController.class
+com\kaige\controller\IndexController.class
+com\kaige\controller\BlogController.class
+com\kaige\controller\CommentController$1.class
+com\kaige\controller\CommentController.class
+com\kaige\controller\FriendController.class
+com\kaige\KBlogApplication.class

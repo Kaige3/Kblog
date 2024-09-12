@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaige.mapper.TagMapper">
+    <select id="selectNotId" resultType="com.kaige.entity.Tag">
+        select tag_name as name,color
+        from tag
+        order by id desc
+    </select>
+    <select id="getTagsByBlogId" resultType="com.kaige.entity.Tag">
+        select t.tag_name as name,t.color
+        from blog_tag as bt left join nblog.tag t on t.id = bt.tag_id
+        where bt.blog_id = #{id}
+    </select>
+</mapper>

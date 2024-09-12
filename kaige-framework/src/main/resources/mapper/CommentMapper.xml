@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaige.mapper.CommentMapper">
+
+
+
+    <resultMap id="comment" type="com.kaige.entity.Comment">
+        <id property="id" column="id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email" column="email"/>
+        <result property="content" column="content"/>
+        <result property="avatar" column="avatar"/>
+        <result property="createTime" column="create_time"/>
+        <result property="ip" column="ip"/>
+        <result property="published" column="is_published"/>
+        <result property="adminComment" column="is_admin_comment"/>
+        <result property="page" column="page"/>
+        <result property="notice" column="is_notice"/>
+        <result property="parentCommentId" column="parent_comment_id"/>
+        <result property="website" column="website"/>
+        <result property="qq" column="qq"/>
+        <association property="blog" javaType="com.kaige.entity.BlogIdAndTitle">
+            <id property="id" column="blog_id"/>
+            <result property="title" column="title"/>
+        </association>
+    </resultMap>
+    <!--保存评论-->
+    <insert id="saveComment" useGeneratedKeys="true" keyProperty="id">
+        insert into comment (nickname, email, content, avatar, create_time, website, ip, is_published, is_admin_comment,
+                             page, is_notice, parent_comment_id, blog_id, qq)
+        values (#{nickname}, #{email}, #{content}, #{avatar}, #{createTime}, #{website}, #{ip}, #{published}, #{adminComment},
+                #{page}, #{notice}, #{parentCommentId}, #{blogId}, #{qq})
+    </insert>
+
+    <select id="countByPageAndIsPublished" resultType="java.lang.Integer">
+        select count(*) from comment
+        where page=#{page}
+        <if test="isPublished != null">
+            and is_published = #{isPublished}
+        </if>
+        <if test="page == 0 and blogId != 0">
+            and blog_id=#{blogId}
+        </if>
+    </select>
+
+
+    <resultMap id="pageComment" type="com.kaige.model.vo.PageComment">
+        <id property="id" column="id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="content" column="content"/>
+        <result property="avatar" column="avatar"/>
+        <result property="createTime" column="create_time"/>
+        <result property="website" column="website"/>
+        <result property="adminComment" column="is_admin_comment"/>
+        <result property="parentCommentId" column="parent_comment_id"/>
+        <result property="parentCommentNickname" column="parent_comment_nickname"/>
+    </resultMap>
+    <!--    查询页面展示的评论List-->
+    <select id="getPageCommentListByPageAndParentCommentId" resultType="com.kaige.model.vo.PageComment">
+                select c1.id, c1.nickname, c1.content, c1.avatar, c1.create_time, c1.is_admin_comment as adminComment, c1.website,
+                c1.parent_comment_id as parent_comment_id, c2.nickname as parentCommentNickname
+                from comment as c1 left join comment as c2 on c1.parent_comment_id=c2.id
+                where c1.page=#{page}
+                <if test="page == 0 and blogId!=null">
+                    and c1.blog_id=#{blogId}
+                </if>
+                and c1.parent_comment_id=#{parentCommentId}
+                and c1.is_published=true
+                order by c1.create_time desc
+    </select>
+    <select id="getCommentById" resultMap="comment">
+        select c.id, c.nickname, c.email, c.content, c.avatar, c.create_time, c.ip, c.is_published, c.is_admin_comment, c.page,
+               c.is_notice, c.parent_comment_id, c.website, c.qq, c.blog_id, b.title
+        from comment as c left join blog as b on c.blog_id=b.id
+        where c.id=#{id}
+    </select>
+
+</mapper>
